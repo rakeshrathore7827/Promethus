@@ -1,0 +1,12 @@
+- targets:
+    - 192.168.43.123:9100
+  labels:
+    env: prod
+    group: phisical
+
+- targets:
+    - 192.168.43.124:9100
+  labels:
+    env: prod
+    group: phisical
+

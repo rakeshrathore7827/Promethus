@@ -1,0 +1,37 @@
+global:
+  resolve_timeout: 5m
+
+route:
+  group_wait: 30s
+  group_interval: 5m
+  repeat_interval: 5m
+
+  receiver: 'default-receiver'
+  group_by: [group, env]
+
+  routes:
+  - receiver: urgent
+    match:
+      severity: critical
+
+receivers:
+- name: 'urgent'
+  email_configs:
+  - to: reciveremail@test.com
+    from: sender2@gmail.com
+    smarthost: smtp.gmail.com:587
+    auth_username: "sender2@gmail.com"
+    auth_identity: "sender2@gmail.com"
+    auth_password: "pass@1234"
+  webhook_configs:
+  - url: 'http://db94f4e9.ngrok.io/prometheus'
+    send_resolved: true
+
+- name: 'default-receiver'
+  email_configs:
+  - to: reciveremail@test.com
+    from: sender2@gmail.com
+    smarthost: smtp.gmail.com:587
+    auth_username: "sender2@gmail.com"
+    auth_identity: "sender2@gmail.com"
+    auth_password: "pass@1234"

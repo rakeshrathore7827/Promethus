@@ -1,0 +1,21 @@
+[Unit]
+Description=Prometheus Server
+Documentation=https://prometheus.io/docs/introduction/overview/
+After=network-online.target
+
+[Service]
+User=root
+Restart=on-failure
+#ExecStart=/root/promuths/prometheus/prometheus --config.file=/root/promuths/prometheus/prometheus.yml
+
+ExecStart=/root/promuths/prometheus/prometheus \
+    --config.file=/root/promuths/prometheus/prometheus.yml \
+    --storage.tsdb.path /root/promuths/prometheus/data \
+    --web.console.templates=/root/promuths/prometheus/consoles \
+    --web.console.libraries=/root/promuths/prometheus/console_libraries
+
+
+
+
+[Install]
+WantedBy=multi-user.target

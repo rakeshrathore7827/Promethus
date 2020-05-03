@@ -1,0 +1,62 @@
+groups:
+- name: node-exporter
+  rules:
+  - alert: InstanceDown
+    expr: up{} == 0
+    for: 5m 
+    labels:
+      severity: critical
+      service: node
+    annotations:
+      description: "{{ $labels.instance }} has been down for more than 5 minutes."
+      summary: "host down."
+
+  - alert: cpu_used
+    expr:  (100 - (avg by (instance) (irate(node_cpu_seconds_total{mode="idle"}[5m])) * 100)) > 85
+    for: 5m
+    labels:
+      severity: warning
+      service: node
+    annotations:
+      description: "{{ $labels.instance }} cpu has been used over 90% for more than 5 minutes."
+      summary: "cpu usage."
+
+  - alert: memory_used
+    expr: 100 * (1 - node_memory_MemFree{} / node_memory_MemTotal{}) > 90 
+    for: 5m
+    labels:
+      severity: warning
+      service: node
+    annotations:
+      description: "{{ $labels.instance }} memory has been used over 90% for more than 5 minutes."
+      summary: "memory usage."
+
+  - alert: disk_used
+    expr: 100 * (1 - node_filesystem_avail_bytes{device="rootfs",mountpoint="/"} / node_filesystem_size_bytes{device="rootfs",mountpoint="/"}) > 90
+    for: 5m
+    labels:
+      severity: critical
+      service: node
+    annotations:
+      description: "{{ $labels.instance }} disk has been used over 90% for more than 5 minutes."
+      summary: "disk usage."
+
+  - alert: UnusualNetworkThroughputIn
+    expr: sum by (instance) (irate(node_network_receive_bytes_total[2m])) / 1024 / 1024 > 70
+    for: 5m
+    labels:
+      severity: warning
+      service: node
+    annotations:
+      description: "{{ $labels.instance }} network interfaces are probably receiving too much data (> 70 MB/s)"
+      summary: "network in."
+
+  - alert: UnusualNetworkThroughputOut
+    expr: sum by (instance) (irate(node_network_transmit_bytes_total[2m])) / 1024 / 1024 > 70
+    for: 5m
+    labels:
+      severity: warning
+      service: node
+    annotations:
+      description: "{{ $labels.instance }} network interfaces are probably sending too much data (> 70 MB/s)"
+      summary: "network out."
