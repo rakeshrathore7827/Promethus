@@ -1,0 +1,11 @@
+---
+- hosts: localhost
+  tasks:
+    - name: copy file to remote host
+      copy: src=./{{item}} dest=/etc/systemd/system/ owner=root group=root mode=0777
+      with_items:
+        - prometheus.service
+        - alertmanager.service
+    - name: command to execute shell script
+      command: sh './proservice.sh'
+      register: output_shell
