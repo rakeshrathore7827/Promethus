@@ -1,0 +1,10 @@
+ARG1=--log.level="debug"
+ARG2=--collector.cpu
+ARG3=--collector.textfile.directory
+ARG4=/var/lib/node_exporter/textfile_collector
+ARG5=--web.listen-address=":9091"
+ARG6=--web.telemetry-path="/metrics"
+ARG7=--persistence.file="/tmp/metric.store"
+ARG8=--persistence.interval=5m
+ARG9=--log.level="info"
+ARG10=--log.format="logger:stdout?json=true"

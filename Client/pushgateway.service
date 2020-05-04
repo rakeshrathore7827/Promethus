@@ -1,0 +1,16 @@
+[Unit]
+Description=Pushgateway
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+User=root
+Restart=on-failure
+Type=simple
+EnvironmentFile=/etc/.argconf
+ExecStart=/root/pushgateway/pushgateway $ARG5 $ARG6 $ARG7 $ARG8 $ARG9 
+
+    
+
+[Install]
+WantedBy=multi-user.target

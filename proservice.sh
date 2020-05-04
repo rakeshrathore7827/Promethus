@@ -8,7 +8,6 @@ sleep 2
 
 yum install -y grafana fontconfig fontconfig* urw-fonts
 
-
 sleep 2
 
 systemctl start grafana-server.service

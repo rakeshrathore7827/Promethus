@@ -1,0 +1,14 @@
+[Unit]
+Description=Node Exporter
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+User=root
+Restart=on-failure
+Type=simple
+EnvironmentFile=/etc/.argconf
+ExecStart=/root/node_exporter/node_exporter  $ARG1 $ARG2 $ARG3 $ARG4 
+
+[Install]
+WantedBy=multi-user.target
