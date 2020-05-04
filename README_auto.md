@@ -22,6 +22,11 @@ OS:-  Centos
 RAM:- 4-12gb
 HDD-  40gb
 
+
+# FOR Server 
+
+
+
 Setup 1-
 yum install epel-release 
 yum install git
@@ -30,11 +35,19 @@ yum isntall ansible
 git clone https://rakeshrathore78@bitbucket.org/rakeshrathore78/promuths.git
 
 cd promuths 
+
+
+
 ansible-playbook server.yml
-Please Edit node.yml For node  details. 
+
+
+Please Edit node.yml For node(Client_IP)  details. 
+
 
 vi /root/promuths/prometheus/node.yml
- targets:
+
+
+- targets:
     - 192.168.43.123:9100
   labels:
     env: prod
@@ -47,25 +60,43 @@ vi /root/promuths/prometheus/node.yml
     group: phisical
 
 
-Edit alertmanager.yml For Email alert
+
+
+#Edit alertmanager.yml For Email alert
+
+
 vi /root/promuths/alertmanager/alertmanager.yml
 
 
-#Client
-Before running ansible command please add client ip details on hosts file 
+# FOR Client
+
+#Before running ansible command please add client ip details on hosts file 
+
+#just replace  hosts file from current folder to /etc/ansible/   and Edit with your client Ip.
+
 
 
 ansible-playbook Client.yml
 
-Check Status If node_exporter & pushgateway
-run process Script
+
+
+#Check Status If node_exporter & pushgateway
+
+ run process Script
+
+
 cd /root/promuths/Client/pushgateway/
 ./process
 
-#edit cronjob
+#Edit cronjob
 
-cront
+crontab -e
+
 @reboot /root/promuths/Client/pushgateway/process
+
+
+For More exporters please Fllow bellow link.
+
 https://prometheus.io/docs/instrumenting/exporters/
 
 

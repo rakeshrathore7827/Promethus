@@ -8,7 +8,7 @@ User=root
 Restart=on-failure
 Type=simple
 EnvironmentFile=/etc/.argconf
-ExecStart=/root/node_exporter/node_exporter  $ARG1 $ARG2 $ARG3 $ARG4 
+ExecStart=/root/Client/node_exporter/node_exporter  $ARG1 $ARG2 $ARG3 $ARG4 
 
 [Install]
 WantedBy=multi-user.target
