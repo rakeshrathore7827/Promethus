@@ -86,6 +86,9 @@ ansible-playbook Client.yml
 
 
 cd /root/promuths/Client/pushgateway/
+
+
+
 ./process
 
 #Edit cronjob

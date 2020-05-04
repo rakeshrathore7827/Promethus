@@ -73,6 +73,23 @@ WantedBy=multi-user.target
 
 
 CLient---
+# just Create a file like bellow 
+
+
+vi /etc/.argconf
+
+ARG1=--log.level="debug"
+ARG2=--collector.cpu
+ARG3=--collector.textfile.directory
+ARG4=/var/lib/node_exporter/textfile_collector
+ARG5=--web.listen-address=":9091"
+ARG6=--web.telemetry-path="/metrics"
+ARG7=--persistence.file="/tmp/metric.store"
+ARG8=--persistence.interval=5m
+ARG9=--log.level="info"
+ARG10=--log.format="logger:stdout?json=true"
+
+
 
 
 https://prometheus.io/docs/instrumenting/exporters/
@@ -88,7 +105,8 @@ tar -xvf xvf pushgateway-1.2.0.linux-amd64.tar.gz
 cp pushgateway-1.2.0.linux-amd64/pushgateway /usr/local/bin/
 
 cat > /etc/systemd/system/pushgateway.service << EOF
-[Unit]
+
+Unit]
 Description=Pushgateway
 Wants=network-online.target
 After=network-online.target
@@ -97,16 +115,15 @@ After=network-online.target
 User=root
 Restart=on-failure
 Type=simple
-ExecStart=/usr/local/bin/pushgateway \
-    --web.listen-address=":9091" \
-    --web.telemetry-path="/metrics" \
-    --persistence.file="/tmp/metric.store" \
-    --persistence.interval=5m \
-    --log.level="info" \
-    --log.format="logger:stdout?json=true"
+EnvironmentFile=/etc/.argconf
+ExecStart=/root/pushgateway/pushgateway $ARG5 $ARG6 $ARG7 $ARG8 $ARG9
+
+
 
 [Install]
 WantedBy=multi-user.target
+
+
 EOF
 
 
@@ -125,7 +142,6 @@ cp node_exporter-0.17.0.linux-amd64/node_exporter /usr/local/bin
 
 vim /etc/systemd/system/node_exporter.service
 
-
 [Unit]
 Description=Node Exporter
 Wants=network-online.target
@@ -135,11 +151,12 @@ After=network-online.target
 User=root
 Restart=on-failure
 Type=simple
-#ExecStart=/usr/local/bin/node_exporter
+EnvironmentFile=/etc/.argconf
+ExecStart=/root/node_exporter/node_exporter  $ARG1 $ARG2 $ARG3 $ARG4
 
-ExecStart=/usr/local/bin/node_exporter --log.level="debug" --collector.cpu --collector.textfile.directory /var/lib/node_exporter/textfile_collector
 [Install]
 WantedBy=multi-user.target
+
 
  systemctl daemon-reload
  systemctl start node_exporter
