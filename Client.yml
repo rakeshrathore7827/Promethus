@@ -1,0 +1,19 @@
+---
+- hosts: Client
+  tasks: 
+    - name: create directory if they don't exist
+      file:
+        path: "{{ item }}"
+        state: directory
+        owner: root
+        group: root
+        mode: 0775
+      with_items:
+        - /root/promuths/
+    - name: copy file to remote host
+      copy: src=/root/test/promuths/{{item}} dest=/root/promuths/ owner=root group=root mode=0777
+      with_items:
+        - "Client/"
+    - name: command to execute shell script
+      command: sh '/root/promuths/Client/Copyprocess.sh'
+      register: output_shell
