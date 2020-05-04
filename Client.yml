@@ -1,5 +1,5 @@
 ---
-- hosts: Client
+- hosts: Promethus
   tasks: 
     - name: create directory if they don't exist
       file:
